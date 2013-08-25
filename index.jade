@@ -1,0 +1,55 @@
+!!!5
+html(lang="en")
+  head
+    title Starter Template for Bootstrap
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(name="description", content="")
+    meta(name="keywords", content="")
+    meta(name="author", content="")
+    block styles
+      link(rel="shortcut icon", href="/dev/assets/ico/favicon.png")
+      link(href="dist/css/bootstrap.css", rel="stylesheet")
+      link(href="starter-template.css", rel="stylesheet")
+
+    | <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    | <!--[if lt IE 9]>
+    |  <script src="dev/assets/js/html5shiv.js"></script>
+    |  <script src="dev/assets/js/respond.min.js"></script>
+    | <![endif]-->
+
+  body
+    div(class="navbar navbar-inverse navbar-fixed-top")
+      .container
+        .navbar-header
+          button(type="button", class="navbar-toggle", data-toggle="collapse", data-target=".navbar-collapse")
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a(class="navbar-brand" href="#") Today Was...
+        div(class="collapse navbar-collapse")
+          ul(class="nav navbar-nav")
+            li.active
+              a(href="#") Home
+            li
+              a(href="#about") About
+            li
+              a(href="#contact") Contact
+    .container
+      .starter-template
+        h1 I must say Today Was A Good Day
+        p.lead Was it really? Rate your day on a 1 to 5 scale below.
+        form
+          label(style="padding:4px;") 1 
+            input(type="radio" name="rating" value="1")
+          label(style="padding:4px;") 2 
+            input(type="radio" name="rating" value="2") 2
+          label(style="padding:4px;") 3 
+            input(type="radio" name="rating" value="3") 3
+          label(style="padding:4px;") 4 
+            input(type="radio" name="rating" value="4") 4
+          label(style="padding:4px;") 5 
+            input(type="radio" name="rating" value="5") 5
+
+    script(src='assets/js/jquery.js')
+    script(src='dist/js/bootstrap.min.js')
