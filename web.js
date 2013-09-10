@@ -7,11 +7,12 @@ app.configure(function(){
 	app.use(express.static(__dirname + '/public'));
 });
 
-var html = jade.renderFile('index.jade');
-
-
 app.get('/', function(request, response) {
-  response.send(html);
+  response.send(jade.renderFile('index.jade'));
+});
+
+app.get('/about', function(request, response){
+	response.send(jade.renderFile('about.jade'));
 });
 
 var port = process.env.PORT || 5000;
