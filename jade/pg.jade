@@ -1,0 +1,14 @@
+include includes/head
+body
+    include includes/nav
+    .container
+        .tw-template
+            h1 List of newest users
+            ul#newUserList
+
+    script(src='/assets/js/jquery.js')
+    script(src='/dist/js/bootstrap.min.js')
+    script(src="/assets/js/twfuncs.js")
+    script.
+        userData = JSON.parse(htmlDecode("#{users}"));
+        document.getElementById("newUserList").innerHTML = dumpValsFromJSON(userData);

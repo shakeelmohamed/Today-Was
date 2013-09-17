@@ -1,0 +1,19 @@
+// These follow the format of {'url': 'visiblename' }
+- var navItems = {'': 'Home', 'about': 'About'}
+div(class="navbar navbar-inverse navbar-fixed-top")
+  .container
+    .navbar-header
+      button(type="button", class="navbar-toggle", data-toggle="collapse", data-target=".navbar-collapse")
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+      a(class="navbar-brand" href="./") Today Was...
+    div(class="collapse navbar-collapse")
+        ul(class="nav navbar-nav")
+            - for navItem, path in navItems
+                if path === loc
+                    li.active
+                        a(href= '/' + path)= navItem
+                else
+                    li
+                        a(href= '/' + path)= navItem
