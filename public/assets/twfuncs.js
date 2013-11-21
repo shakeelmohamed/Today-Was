@@ -16,3 +16,9 @@ function dumpValsFromJSON(data){
 	}
 	return ret;
 }
+
+function devAlert(loc){
+	if(loc != 'http://twdev.herokuapp.com') {
+		alert("You're on a development server.");
+	}
+} 

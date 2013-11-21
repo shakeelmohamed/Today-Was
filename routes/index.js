@@ -1,6 +1,7 @@
 exports.init = function (app) {
     var pg = require('pg'),
-    jade = require('jade');
+    jade = require('jade'),
+    bcrypt = require('bcrypt-nodejs');
 
     app.get('/', function (req, res) {
         res.render('index', {title: 'Home', loc: ''});
@@ -22,7 +23,8 @@ exports.init = function (app) {
                 var tenNewestUsers = [];
                 for (var x in result.rows) {
                     tenNewestUsers.push({
-                        nicename: result.rows[x]['nicename']
+                        nicename: result.rows[x]['nicename'],
+                        encryptedName: bcrypt.hashSync(result.rows[x]['nicename'])
                     });
                 }
 

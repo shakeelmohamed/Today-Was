@@ -7,8 +7,11 @@ var express = require('express'),
 app.configure(function () {
     app.set('views', __dirname + '/jade');
     app.set('view engine', 'jade');
-    app.use(app.router);
     app.use(express.static(__dirname + '/public'));
+    app.use(app.router);
+    app.use(function(req, res, next){
+		res.render('404')
+	});
 });
 
 routes.init(app);
