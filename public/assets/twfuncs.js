@@ -17,8 +17,8 @@ function dumpValsFromJSON(data){
 	return ret;
 }
 
-function devAlert(loc){
-	if(loc != 'http://twdev.herokuapp.com') {
+function devAlert(){
+	if(window.location.href != 'http://twdev.herokuapp.com') {
 		alert("You're on a development server.");
 	}
 } 
