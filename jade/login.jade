@@ -1,0 +1,25 @@
+include includes/head
+script.
+    var msg = '!{msg}';
+
+body
+    include includes/nav
+    .container
+        .row.text-center.tw-template
+            h2 Login to Today Was...
+            - if(msg)
+                div.alert.alert-danger 
+                    strong #{msg}
+            form.col-xs-4.col-md-offset-4(method="post" action="/login" name="entry_form")
+                p
+                    input(type="text" class="form-control" name="user" id="user" placeholder="Email")
+                p
+                    input(type="password" class="form-control" name="password" id="password" placeholder="Password")
+                p
+                    button(type="submit" class="btn btn-primary btn btn-info") Sign in 
+                    span(style="padding:10px")
+                    a(href="#" class="btn btn-primary btn btn-info") Register
+                a(href="#") Forgot Password?
+    
+    include includes/scripts
+    include includes/foot
