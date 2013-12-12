@@ -3,51 +3,72 @@ exports.init = function (app) {
     jade = require('jade'),
     bcrypt = require('bcrypt-nodejs');
 
+    /** Static pages **/
     app.get('/', function (req, res) {
         res.render('index', {title: 'Home', loc: 'home', user: req.session.user_id});
     });
-
     app.get('/about', function (req, res) {
         res.render('about', {title: 'About', loc: 'about', user: req.session.user_id});
     });
 
 
     app.get('/login', function (req, res) {
-        res.render('login', {title: 'Login', loc: 'login', user: req.session.user_id});
+        if (req.session.user_id) {
+            //Send user to the journal page if they're authorized
+            res.redirect('journal');
+        }
+        else {
+            res.render('login', {title: 'Login', loc: 'login', user: req.session.user_id});
+        }
     });
 
     app.post('/login', function (req, res) {
         var post = req.body;
 
+        //TODO: add some data validation: email, password format, string length, sql sanitize
         pg.connect(process.env.DATABASE_URL, function (err, client) {
             if (err) {
                 return console.error('could not connect to postgres', err);
             }
-            client.query("SELECT * from subject where nicename='"+post.user+"'", function (err, result) {
-                if (err || result.rows.length == 0) {
-                    res.render('login', {title: 'Login', loc: 'login', msg: 'Error: login failed'});
-                    client.end();
-                }
-                else {
-                    //TODO: remove the sync function from the db result, it should already be hashed
-                    //if ( bcrypt.compareSync( bcrypt.hashSync(result.rows[0]['secret']), bcrypt.hashSync(post.password) ) ) {
-                    if(post.password == result.rows[0]['secret']) {
-                        req.session.user_id = post.user;
-                        res.redirect('/journal');
-                    } else {
+            if(post.login == 'login')
+            {
+                client.query("SELECT * from subject where nicename='"+post.user+"'", function (err, result) {
+                    if (err || result.rows.length === 0) {
                         res.render('login', {title: 'Login', loc: 'login', msg: 'Error: login failed'});
+                        client.end();
                     }
-                }
-                client.end();
-            });
+                    else {
+                        //TODO: remove the sync function from the db result, it should already be hashed
+                        //if ( bcrypt.compareSync( result.rows[0]['secret'], bcrypt.hashSync(post.password) ) ) {
+                        if(post.password == result.rows[0].secret) {
+                            req.session.user_id = post.user;
+                            res.redirect('/journal');
+                        } else {
+                            res.render('login', {title: 'Login', loc: 'login', msg: 'Error: login failed'});
+                        }
+                        client.end();
+                    }
+                });
+            }
+            /*
+            else if(post.register == 'register')
+            {
+                //TODO: handle registration processs, sanitize before doing the insert.
+                //query: "insert into subjects (subjectid, email, secret) values (DEFAULT, '"+post.email+"', '"+bcrypt.hashSync(post.password)+"')"
+                //the insert query must be run asynch, to get the callback for errors like non-unique values, etc.
+            }
+            */
+            else {
+                res.render('login', {title: 'Login', loc: 'login', msg: 'Error: login failed, unexpected form data'});
+            }
         });
     });
 
     app.get('/logout', function (req, res) {
         delete req.session.user_id;
         res.redirect('/login');
-    }); 
-    
+    });
+
     /**Function to check if a user is logged in**/
     function checkAuth(req, res, next) {
         if (!req.session.user_id) {

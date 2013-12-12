@@ -20,12 +20,13 @@ script.
                 else
                     li
                         a(href= '/' + path)= navItem
-        - if(user)
-            ul.nav.navbar-nav.navbar-right
+            - if(user)
                 li
+                    a(href="/logout" style="color:whitesmoke") Logout
+        ul.nav.navbar-nav.navbar-right
+            li
+                - if(user)
                     a(style="color:whitesmoke;") Hello, #{user}
-        - else
-            ul.nav.navbar-nav.navbar-right
-                li
+                - else
                     a(href="/login" style="color:whitesmoke") Login
             
