@@ -19,6 +19,8 @@ function dumpValsFromJSON(data){
 
 function devAlert(){
 	if(window.location.href != 'http://twdev.herokuapp.com') {
-		alert("You're on a development server.");
+		var msg = '<div class="alert alert-danger text-center"><strong>You are on a development server.</strong></div>';
+		var html = document.getElementsByClassName('container')[document.getElementsByClassName('container').length-1].innerHTML;
+		document.getElementsByClassName('container')[document.getElementsByClassName('container').length-1].innerHTML = msg+html;
 	}
 } 
