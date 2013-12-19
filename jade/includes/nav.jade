@@ -20,9 +20,12 @@ script.
                 else
                     li
                         a(href= '/' + path)= navItem
-            - if(user)
-                li
+            
+            li
+                - if(user)
                     a(href="/logout" style="color:whitesmoke") Logout
+                - else
+                    a(href="/join" style="color:whitesmoke") Join
         ul.nav.navbar-nav.navbar-right
             li
                 - if(user)

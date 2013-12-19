@@ -11,10 +11,10 @@ exports.init = function (app) {
         res.render('about', {title: 'About', loc: 'about', user: req.session.user_id});
     });
 
-
     app.get('/login', function (req, res) {
         if (req.session.user_id) {
             //Send user to the journal page if they're authorized
+            //TODO: make this a middleware function for code reuse
             res.redirect('journal');
         }
         else {
@@ -38,28 +38,56 @@ exports.init = function (app) {
                         client.end();
                     }
                     else {
-                        //TODO: remove the sync function from the db result, it should already be hashed
-                        //if ( bcrypt.compareSync( result.rows[0]['secret'], bcrypt.hashSync(post.password) ) ) {
-                        if(post.password == result.rows[0].secret) {
+                        if ( bcrypt.compareSync(post.password, result.rows[0].secret) ) {
                             req.session.user_id = post.user;
                             res.redirect('/journal');
-                        } else {
+                        }
+                        else {
                             res.render('login', {title: 'Login', loc: 'login', msg: 'Error: login failed'});
                         }
                         client.end();
                     }
                 });
             }
-            /*
-            else if(post.register == 'register')
-            {
-                //TODO: handle registration processs, sanitize before doing the insert.
-                //query: "insert into subjects (subjectid, email, secret) values (DEFAULT, '"+post.email+"', '"+bcrypt.hashSync(post.password)+"')"
-                //the insert query must be run asynch, to get the callback for errors like non-unique values, etc.
-            }
-            */
             else {
                 res.render('login', {title: 'Login', loc: 'login', msg: 'Error: login failed, unexpected form data'});
+            }
+        });
+    });
+
+    app.get('/join', function (req, res) {
+        if (req.session.user_id) {
+            //Send user to the journal page if they're authorized
+            res.redirect('journal');
+        }
+        else {
+            res.render('join', {title: 'Join', loc: 'join', user: req.session.user_id});
+        }
+    });
+
+    app.post('/join', function (req, res) {
+        var post = req.body;
+        //TODO: add some data validation: email, password format, string length, sql sanitize
+        pg.connect(process.env.DATABASE_URL, function (err, client) {
+            if (err) {
+                return console.error('could not connect to postgres', err);
+            }
+            if(post.register == 'register')
+            {
+                //TODO: handle registration processs, sanitize before doing the insert.
+                //TODO: insert query must be run asynch, to get the callback for errors like non-unique values, etc.
+                client.query("insert into subject (subjectid, nicename, email, secret) values (DEFAULT, '"+post.user+"', '"+post.email+"', '"+bcrypt.hashSync(post.password)+"')", function (err, result) {
+                    if (err) {
+                        console.log("ERROR ON REGISTRATION: "+err);
+                    }
+                    else {
+                        console.log("I think registration worked.");
+                        res.redirect('join');
+                    }
+                });
+            }
+            else {
+                res.render('join', {title: 'Join', loc: 'join', msg: 'Error: login failed, unexpected form data'});
             }
         });
     });
@@ -77,6 +105,15 @@ exports.init = function (app) {
         }
         else {
             next();
+        }
+    }
+
+    //TODO: implement, and/or merge with checkAuth
+    function skipAuth(req, res, next) {
+        //The goal of this function is to send the user to the journal page if they're logged in already
+        if(req.session.user_id) {
+            //TODO: This will do a double redirect back to journal, inefficient
+            res.redirect('join');
         }
     }
 
