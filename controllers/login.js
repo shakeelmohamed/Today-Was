@@ -8,6 +8,25 @@ function areFieldsSet(postObject) {
     }
 }
 
+function getClientIp(req) {
+  var ipAddress;
+  // Amazon EC2 / Heroku workaround to get real client IP
+  var forwardedIpsStr = req.header('x-forwarded-for'); 
+  if (forwardedIpsStr) {
+    // 'x-forwarded-for' header may return multiple IP addresses in
+    // the format: "client IP, proxy 1 IP, proxy 2 IP" so take the
+    // the first one
+    var forwardedIps = forwardedIpsStr.split(',');
+    ipAddress = forwardedIps[0];
+  }
+  if (!ipAddress) {
+    // Ensure getting client IP address still works in
+    // development environment
+    ipAddress = req.connection.remoteAddress;
+  }
+  return ipAddress;
+}
+
 module.exports = function (getViewData, config) {
     return {
         get: function (req, res) {
@@ -50,8 +69,15 @@ module.exports = function (getViewData, config) {
                                     else {
                                         if (bcrypt.compareSync(post.password, result.rows[0].secret)) {
                                             console.log("Login worked for", result.rows[0].username);
-                                            req.session.userID = post.user;
-                                            res.redirect("account");
+                                            client.query("INSERT INTO logins VALUES (DEFAULT, $1, DEFAULT, $2)", [getClientIp(req), result.rows[0].id], function(err, result){
+                                                if (err) {
+                                                    callback(err);
+                                                }
+                                                else {
+                                                    req.session.userID = post.user;
+                                                    res.redirect("account");
+                                                }
+                                            });
                                         }
                                         else {
                                             callback(true);

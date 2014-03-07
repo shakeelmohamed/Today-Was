@@ -57,6 +57,7 @@ app.configure(function () {
     });
 });
 
+/* TODO: ignoring the DB table check for now, will address later w/ all tables/views
 pg.connect(config.DATABASE_URL, function (err, client) {
     if (err) {
         return console.error("ERROR: Could not connect to postgres", err);
@@ -98,6 +99,7 @@ pg.connect(config.DATABASE_URL, function (err, client) {
         }
     );
 });
+*/
 
 routes.init(app);
 module.exports = app;

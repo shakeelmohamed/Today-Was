@@ -21,4 +21,6 @@ exports.init = function (app) {
 
     // Pass in middleware for pages that require a user to be logged in
     app.get("/account", utils.checkAuth, controllers.account.get);
+
+    app.post("/entries", utils.checkAuth, controllers.entries.post);
 };
