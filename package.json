@@ -1,18 +1,26 @@
 {
-  "name": "Today-Was...",
+  "name": "today-was",
   "version": "0.0.1",
-  "repository" : { 
-    "type": "git",
-    "url": "http://github.com/shakeelmohamed/today-was.git"
-  },
+  "description": "A quality of life tracker",
+  "main": "app.js",
   "dependencies": {
-    "bcrypt-nodejs": "0.x.3",
+    "async": "*",
+    "bcrypt-nodejs": "0.0.3",
     "express": "3.x",
     "jade": "0.35.0",
     "pg": "2.x"
   },
-  "engines": {
-    "node": "0.10.x",
-    "npm": "1.2.x"
+  "keywords": [
+    "egress"
+  ],
+  "author": {
+    "name": "Shakeel Mohamed"
+  },
+  "repository" : { 
+    "type": "git",
+    "url": "http://github.com/shakeelmohamed/today-was.git"
+  },
+  "engine": {
+    "node": "0.10.x"
   }
 }
