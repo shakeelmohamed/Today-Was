@@ -1,11 +1,16 @@
-include includes/head
-body
-    include includes/nav
-    .container
-        .text-center.tw-template
-            h1
-                img.img-responsive(style="margin: 0 auto;" src="assets/img/good_day.gif" alt="I got to say it was a good day, a quote from Ice Cube's 'Today Was a Good Day'")
-            p.lead Was it really? Join to begin rating your days on a 1 to 5 scale.
+doctype html
+html(lang="en")
+    include includes/head
+    body
+        include includes/nav
+        .container
+            .text-center.egress-template
+                header.page-header
+                    h1 Welcome to #{siteName}
+                p.lead
+                    img.img-responsive(style="margin: 0 auto; min-width:340px; min-height:191px;" src="img/good_day.gif" alt="I got to say it was a good day, a quote from Ice Cube's 'Today Was a Good Day'" title="I got to say it was a good day")
+                p.lead Was it really? 
+                    a(href="/join") Join
+                    |  to begin rating your days.
 
-    include includes/scripts
-    include includes/foot
+        include includes/scripts
