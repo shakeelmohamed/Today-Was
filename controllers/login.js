@@ -58,7 +58,7 @@ module.exports = function (getViewData, config) {
                     {
                         async.waterfall([
                                 function (callback) {
-                                    client.query("SELECT * FROM users WHERE username=$1 OR email=$1 LIMIT 1", [post.user], callback);
+                                    client.query("SELECT * FROM users WHERE LOWER(username)=LOWER($1) OR LOWER(email)=LOWER($1) LIMIT 1", [post.user], callback);
                                 },
                                 function (result, callback) {
                                     if (!result || !result.rows || result.rows.length === 0) {
@@ -69,12 +69,13 @@ module.exports = function (getViewData, config) {
                                     else {
                                         if (bcrypt.compareSync(post.password, result.rows[0].secret)) {
                                             console.log("Login worked for", result.rows[0].username);
+                                            var username = result.rows[0].username;
                                             client.query("INSERT INTO logins VALUES (DEFAULT, $1, DEFAULT, $2)", [getClientIp(req), result.rows[0].id], function(err, result){
                                                 if (err) {
                                                     callback(err);
                                                 }
                                                 else {
-                                                    req.session.userID = post.user;
+                                                    req.session.userID = username;
                                                     res.redirect("account");
                                                 }
                                             });

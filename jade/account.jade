@@ -10,26 +10,26 @@ html(lang="en")
                 .row.text-center
                     form(method="post" action="/entries")
                         p.lead How was your day?
-                        .btn-group.btn-group-lg(data-toggle="buttons")
+                        .btn-group(data-toggle="buttons")
                             each val, index in {1:"Terrible", 2:"Bad", 3:"Okay", 4:"Good", 5:"Awesome"}
-                                label.btn.btn-lg.btn-primary#rating
+                                label.btn.btn-primary#rating
                                     input(type="radio" name="rating" value="#{index}")
                                     = val
                         br
                         br
                         textarea.form-control(rows="5" name="journal" id="journal" placeholder="Journal entry for today" style="text-align:center; min-width: 300px; max-width:600px; margin:0 auto;" required)
                         br
-                        input.btn.btn-lg.btn-primary(type="submit" name="submit" value="Save")
+                        input.btn.btn-primary(type="submit" name="submit" value="Save")
                 
                 .row.text-center
                     br
                     if entries
                         each item in entries
-                            each value, key in item
-                                case key
-                                    when "entry": p.lead= value
-                                    default: p= value
                             hr
+                            h3= item.created_date
+                            h3
+                                strong= item.label
+                            p.lead(style="word-wrap:break-word;")= item.entry
                     else
                         p.lead You don't have any journal entries yet, what are you waiting for?
         
