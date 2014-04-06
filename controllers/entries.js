@@ -59,6 +59,8 @@ module.exports = function (getViewData, config) {
                         if (err) {
                             console.log("Error on journal entry insertion:", err);
                             // TODO: do a fully manual rendering of the journal page, pass back an error and the new values (maybe reload to revert the unsaved changes?)
+                            // Pass in the args necessary to getViewData, then I can "refill" the unsaved changes, add a button or something to
+                            // say keep unsaved changes, or dump them.
                         }
                         res.redirect("journal"); //TODO: I should send them back to the page, and remember their rating + journal if not saved
 
