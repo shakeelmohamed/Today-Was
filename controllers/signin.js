@@ -1,6 +1,6 @@
 function areFieldsSet(postObject) {
     // Define your custom validation here
-    if (postObject.user && postObject.email && postObject.password) {
+    if (postObject.user && postObject.password) {
         return true;
     }
     else {
@@ -35,7 +35,7 @@ module.exports = function (getViewData, config) {
                 res.redirect("journal");
             }
             else {
-                res.render("join", getViewData("Join", "join"));
+                res.render("signin", getViewData("Sign In", "signin"));
             }
         },
         post: function (req, res) {
@@ -44,14 +44,15 @@ module.exports = function (getViewData, config) {
             var pg = require("pg");
 
             var post = req.body;
-
+            
             //TODO: add some data validation: email, password format, string length, SQL sanitize
-            if (!areFieldsSet(post) && post.register !== "register") {
-                res.render("join", getViewData("Join", "join", req.session.userID, "Error: user registration failed"));
+            if (!areFieldsSet(post) && post.signin !== "signin") {
+                res.render("sign in", getViewData("Sign In", "signin", req.session.userID, "Error: sign in failed"));
             }
             else {
                 var asyncStatus = [];
                 var client = new pg.Client(config.DATABASE_URL);
+                var user;
 
                 async.waterfall([
                         function (callback) {
@@ -59,14 +60,24 @@ module.exports = function (getViewData, config) {
                             client.connect(callback);
                         },
                         function (client, callback) {
-                            asyncStatus.push("client - insert");
-                            client.query("insert into users (id, username, email, secret, registration_ip, registration_timestamp) values (DEFAULT, $1, $2, $3, $4, DEFAULT)", [post.user, post.email, bcrypt.hashSync(post.password), getClientIp(req)], callback);
+                            asyncStatus.push("client");
+                            client.query("SELECT * FROM users WHERE LOWER(username)=LOWER($1) OR LOWER(email)=LOWER($1) LIMIT 1", [post.user], callback);
                         },
                         function (result, callback) {
-                            asyncStatus.push("successful registration");
-                            console.log("Registration worked for", post.user);
-                            // TODO: send the confirmation email, also set a variable for confirmed=false
-                            req.session.userID = post.user;
+                            asyncStatus.push("select user");
+                            if (result && result.rows && result.rowCount === 1 &&  bcrypt.compareSync(post.password, result.rows[0].secret)) {
+                                user = result.rows[0];
+                                console.log("Sign in worked for", user.username);
+                                // Insert the login entry
+                                client.query("INSERT INTO logins VALUES (DEFAULT, $1, DEFAULT, $2)", [getClientIp(req), user.id], callback);
+                            }
+                            else {
+                                callback("Invalid user.");
+                            }
+                        },
+                        function (result, callback) {
+                            asyncStatus.push("sign in success");
+                            req.session.userID = user.username;
                             callback(null);
                         }
                     ],
@@ -75,12 +86,10 @@ module.exports = function (getViewData, config) {
                         console.log("Async status", asyncStatus);
 
                         if (err) {
-                            console.log("ERROR ON REGISTRATION:", err);
-                            res.render("join", getViewData("Join", "join", null, "Error: user registration failed"));
+                            console.log("ERROR", err);
+                            res.render("signin", getViewData("Sign in", "signin", req.session.userID, "Error: sign in failed"));
                         }
-                        else {
-                            res.redirect("account");
-                        }
+                        res.redirect("journal");
                     }
                 );
             }

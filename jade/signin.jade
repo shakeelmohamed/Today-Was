@@ -6,10 +6,10 @@ html(lang="en")
         .container
             .span12.text-center.egress-template
                 header.page-header
-                    h1 Login to #{siteName}
+                    h1 Sign in to #{siteName}
                 if msg
                     .alert.alert-danger#error #{msg}
                 
-                include forms/login
+                include forms/signin
         
         include includes/scripts

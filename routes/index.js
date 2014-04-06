@@ -1,18 +1,15 @@
 exports.init = function (app) {
-    var ControllerSet = require("../controllers");
-    var utils = require("./utils")(app);
-
+    var controllers = require("../controllers")(getViewData, app.locals);
+    
     // Lovely controller routing
-    var controllers = new ControllerSet(utils.getViewData, app.locals);
-
     app.get("/", controllers.home.get);
 
     app.get("/404", controllers._404.get);
 
-    app.get("/logout", controllers.logout.get);
+    app.get("/signout", controllers.signout.get);
 
-    app.get("/login", controllers.login.get);
-    app.post("/login", controllers.login.post);
+    app.get("/signin", controllers.signin.get);
+    app.post("/signin", controllers.signin.post);
 
     app.get("/join", controllers.join.get);
     app.post("/join", controllers.join.post);
@@ -20,7 +17,30 @@ exports.init = function (app) {
     app.get("/about", controllers.about.get);
 
     // Pass in middleware for pages that require a user to be logged in
-    app.get("/account", utils.checkAuth, controllers.account.get);
+    app.get("/journal", isUserLoggedIn, controllers.journal.get); //TODO: rename
 
-    app.post("/entries", utils.checkAuth, controllers.entries.post);
+    app.post("/entries", isUserLoggedIn, controllers.entries.post);
+
+
+    function getViewData(title, pathSuffix, userID, message) {
+        // Set app.locals in web.js; this function gets passed around to all controllers
+        return {
+            siteName: app.locals.siteName,
+            author: app.locals.siteAuthor,
+            title: title,
+            loc: pathSuffix,
+            user: userID,
+            msg: message
+        };
+    }
+
+    function isUserLoggedIn(req, res, next) {
+        if (!req.session.userID) {
+            //Send user to the login page if they're not authorized
+            res.redirect("signin");
+        }
+        else {
+            next();
+        }
+    }
 };

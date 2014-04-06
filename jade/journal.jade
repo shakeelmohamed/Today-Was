@@ -1,0 +1,41 @@
+doctype html
+html(lang="en")
+    include includes/head
+    body
+        include includes/nav
+        .container
+            .row.text-center.egress-template
+                header.page-header
+                    h1 Welcome, #{user}
+                .row.text-center
+                    form(method="post" action="/entries")
+                        p.lead How was your day?
+                        
+
+                        .span6
+                            .btn-group.row-fluid(data-toggle="buttons")
+                                each val, index in {1:"Terrible", 2:"Bad", 3:"Okay", 4:"Good", 5:"Awesome"}
+                                    label.btn.btn-primary#rating(class= today.value == index ? "active" : undefined)
+                                        input(type="radio" name="rating" value="#{index}")
+                                        = val
+                        br
+                        br
+                        textarea.form-control(rows="5" name="journal" id="journal" placeholder="Journal entry for today" style="text-align:center;  min-width: 50px; max-width:600px; margin:0 auto;" required)= today.entry
+                        br
+                        input.btn.btn-primary(type="submit" name="submit" value=today && typeof today.value === "undefined" ? "Save" : "Update")
+                
+                .row.text-center
+                    br
+                    if entries
+                        each item in entries
+                            hr
+                            h3= item.created_date 
+                                |  - 
+                                strong= item.label
+                            p.lead(style="word-wrap:break-word;")= item.entry
+                    else
+                        p.lead You don't have any journal entries yet, what are you waiting for?
+        
+        include includes/scripts
+        script.
+            $(".active").click();

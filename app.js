@@ -1,7 +1,7 @@
-var async = require("async");
+//var async = require("async"); //TODO: commented out for not since not using it here
 var express = require("express");
 var fs = require("fs");
-var pg = require("pg");
+//var pg = require("pg"); //TODO: commented out for not since not using it here
 
 var routes = require("./routes");
 var app = express();
@@ -49,7 +49,7 @@ app.configure(function () {
     app.use(express.urlencoded());
     app.use(express.json());
     app.use(express.cookieParser());
-    app.use(express.session({ secret: "egress-secret-goes-right-here-now"}));
+    app.use(express.session({secret: "egress-secret-goes-right-here-now"})); // Not setting a max session length
     app.use(express.static(__dirname + "/public"));
     app.use(app.router);
     app.use(function (req, res) {
@@ -58,7 +58,6 @@ app.configure(function () {
 });
 
 /* TODO: ignoring the DB table check for now, will address later w/ all tables/views
-// Figure out how to verify that ALL of the tables exist
 pg.connect(config.DATABASE_URL, function (err, client) {
     if (err) {
         return console.error("ERROR: Could not connect to postgres", err);

@@ -3,7 +3,7 @@ function validateJoin(username, email, password) {
 }
 
 function validateLogin(usernameOrEmail, password) {
-    return (validateUsername(usernameOrEmail, "login") || validateEmail(usernameOrEmail, "login")) && validatePassword(password, "login");
+    return (validateUsername(usernameOrEmail, "signin") || validateEmail(usernameOrEmail, "signin")) && validatePassword(password, "signin");
 }
 
 function validateEmail(email, context) {
