@@ -15,12 +15,19 @@ html(lang="en")
                         .span6
                             .btn-group.row-fluid(data-toggle="buttons")
                                 each val, index in {1:"Terrible", 2:"Bad", 3:"Okay", 4:"Good", 5:"Awesome"}
-                                    label.btn.btn-primary#rating(class= today.value == index ? "active" : undefined)
-                                        input(type="radio" name="rating" value="#{index}")
-                                        = val
+                                    if today && today.value == index
+                                        label#rating.btn.btn-primary.active
+                                            input(type="radio" name="rating" value="#{index}")
+                                            = val
+                                    else
+                                        label#rating.btn.btn-primary
+                                            input(type="radio" name="rating" value="#{index}")
+                                            = val
                         br
                         br
-                        textarea.form-control(rows="5" name="journal" id="journal" placeholder="Journal entry for today" style="text-align:center;  min-width: 50px; max-width:600px; margin:0 auto;" required)= today.entry
+                        textarea.form-control(rows="5" name="journal" id="journal" placeholder="Journal entry for today" style="text-align:center;  min-width: 50px; max-width:600px; margin:0 auto;" required)
+                            if today && today.entry
+                                = today.entry
                         br
                         input.btn.btn-primary(type="submit" name="submit" value=today && typeof today.value === "undefined" ? "Save" : "Update")
                 
