@@ -14,7 +14,6 @@ module.exports = function (getViewData, config) {
             var pg = require("pg");
             var async = require("async");
 
-            //var viewData = getViewData("Account", "account", req.session.userID);
             var viewData = getViewData("Journal", "journal", req.session.userID);
             viewData.today = {};
             
@@ -61,8 +60,12 @@ module.exports = function (getViewData, config) {
 
                     if (err) {
                         console.log("Error loading the journal page", err);
+                        // TODO: think of the best place to send the user.
+                        res.redirect("/");
                     }
-                    res.render("journal", viewData);
+                    else {
+                        res.render("journal", viewData);
+                    }
                 }
             );
         }

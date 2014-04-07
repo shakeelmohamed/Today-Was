@@ -68,7 +68,8 @@ module.exports = function (getViewData, config) {
                 );
             }
             else {
-                result.redirect("journal");
+                //TODO: I should send them back to the page, and remember their rating + journal if not saved
+                res.redirect("journal");
             }
         }
     };
