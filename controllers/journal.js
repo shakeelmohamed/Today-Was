@@ -9,6 +9,15 @@ module.exports = function (getViewData, config) {
         return offset;
     }
 
+    function isEmpty(obj) {
+        for (var prop in obj) {
+            if (obj.hasOwnProperty(prop)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     return {
         get: function (req, res) {
             var pg = require("pg");
@@ -17,6 +26,12 @@ module.exports = function (getViewData, config) {
             var viewData = getViewData("Journal", "journal", req.session.userID);
             viewData.today = {};
             
+            if (!isEmpty(req.session.unsaved)) {
+                // Do something with the unsaved data
+                console.log("unsaved journal entry for", req.session.userID, ":", req.session.unsaved);
+            }
+
+
             var asyncStatus = [];
             var client = new pg.Client(config.DATABASE_URL);
 

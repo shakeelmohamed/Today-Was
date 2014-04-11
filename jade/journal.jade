@@ -8,7 +8,7 @@ html(lang="en")
                 header.page-header
                     h1 Welcome, #{user}
                 .row.text-center
-                    form(method="post" action="/entries")
+                    form#journalForm(method="post" action="/entries")
                         p.lead How was your day?
                         
 
@@ -29,7 +29,7 @@ html(lang="en")
                             if today && today.entry
                                 = today.entry
                         br
-                        input.btn.btn-primary(type="submit" name="submit" value=today && typeof today.value === "undefined" ? "Save" : "Update")
+                        input.btn.btn-primary(type="submit" id="submit" name="submit" value=today && typeof today.value === "undefined" ? "Save" : "Update")
                 
                 .row.text-center
                     br
@@ -46,3 +46,12 @@ html(lang="en")
         include includes/scripts
         script.
             $(".active").click();
+
+            // TODO: make the form require JS to post
+            
+            // Temp save to sessionStorage, consider using localStorage
+            $("#journalForm").submit(function () {
+                sessionStorage.rating = $("#rating.active input").val();
+                sessionStorage.journal = $("#journal").text();
+            });
+            

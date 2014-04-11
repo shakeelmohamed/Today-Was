@@ -68,6 +68,13 @@ module.exports = function (getViewData, config) {
                 );
             }
             else {
+                req.session.unsaved = {};
+                if (post.rating) {
+                    req.session.unsaved.ratings = post.rating;
+                }
+                if (post.journal) {
+                    req.session.unsaved.ratings = post.journal;
+                }
                 //TODO: I should send them back to the page, and remember their rating + journal if not saved
                 res.redirect("journal");
             }
