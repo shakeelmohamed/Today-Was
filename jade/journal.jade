@@ -9,11 +9,13 @@ html(lang="en")
                     | &times;
                 strong Success! 
                 span Your journal entry was saved.
-            div#journalFail(class="alert alert-danger alert-dismissable text-center" style="display:none")
+            div#journalFail(class="alert alert-danger alert-dismissable text-center" style=msg ? "" : "display:none")
                 button(type="button" class="close" data-dismiss="alert" aria-hidden="true")
                     | &times;
                 strong Error! 
                 span
+                    if msg
+                        | #{msg}
                 // TODO: add the error message of why the entry save failed.
             .row.text-center.egress-template
                 header.page-header
@@ -24,6 +26,7 @@ html(lang="en")
                         
 
                         .span6
+                            // TODO: add in a noscript tag here to deal with when JS is disabled
                             .btn-group.row-fluid(data-toggle="buttons")
                                 // TODO: setup conditional classes so each rating has it's own color
                                 // TODO: use mixins

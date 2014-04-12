@@ -23,7 +23,7 @@ module.exports = function (getViewData, config) {
             var pg = require("pg");
             var async = require("async");
 
-            var viewData = getViewData("Journal", "journal", req.session.userID);
+            var viewData = getViewData("Journal", "journal", req.session.userID, req.session.journalError || null);
             viewData.today = {};
 
 

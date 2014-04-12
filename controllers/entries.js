@@ -78,7 +78,9 @@ module.exports = function (getViewData, config) {
                             res.json({status: "success"});
                         }
                         else {
-                            res.redirect("journal"); //TODO: I should send them back to the page, and remember their rating + journal if not saved    
+                            //res.redirect("journal"); //TODO: I should send them back to the page, and remember their rating + journal if not saved
+                            req.session.journalError = "Woah! The database did not like that data at all. Your entry hasn't been saved.";
+                            res.redirect("journal");
                         }
                         
 
