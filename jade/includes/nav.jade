@@ -1,30 +1,50 @@
-nav.navbar.navbar-inverse.navbar-fixed-top
-    .container
-        .navbar-header
-            button(type="button", class="navbar-toggle", data-toggle="collapse", data-target=".navbar-collapse")
-                span.icon-bar
-                span.icon-bar
-                span.icon-bar
-            a(class="navbar-brand" href="./") #{siteName}
-        .collapse.navbar-collapse
-            ul.nav.navbar-nav.navbar-right
-                // TODO: use mixins
-                // For the actual navigation items, follow the format of {'url': 'visiblename' }
-                for navItem, path in {"": "Home", "about": "About"}
-                    if path === loc
-                        li.active
-                            a(href= "/" + path)= navItem
+.container
+    .navbar.navbar-inverse(role="navigation")
+        .container-fluid
+            // Brand and toggle get grouped for better mobile display
+            .navbar-header
+                button(type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse")
+                    span.sr-only Toggle navigation
+                    span.icon-bar
+                    span.icon-bar
+                    span.icon-bar
+                a(class="navbar-brand" href="./") #{siteName}
+            // Collect the nav links, forms, and other content for toggling
+            .collapse.navbar-collapse
+                ul.nav.navbar-nav.navbar-right
+                    // TODO: use mixins
+                    // For the actual navigation items, follow the format of {'url': 'visiblename' }
+                    for navItem, path in {"": "Home", "about": "About"}
+                        if path === loc
+                            li.active
+                                a(href= "/" + path)= navItem
+                        else
+                            li
+                                a(href= "/" + path)= navItem
+                    
+                    if user
+                        if "journal" === loc
+                            li.active
+                                a(href="/journal") #{user}'s journal
+                        else
+                            li
+                                a(href="/journal") #{user}'s journal
+                        if "signout" === loc
+                            li.active
+                                a(href="/signout") Sign Out
+                        else
+                            li
+                                a(href="/signout") Sign Out
                     else
-                        li
-                            a(href= "/" + path)= navItem
-                
-                if user
-                    li
-                        a(href="/journal") #{user}'s journal
-                    li
-                        a(href="/signout") Sign Out
-                else
-                    li
-                        a(href="/signin") Sign In
-                    li
-                        a(href="/join") Join
+                        if "signin" === loc
+                            li.active
+                                a(href="/signin") Sign In
+                        else
+                            li
+                                a(href="/signin") Sign In
+                        if "join" === loc
+                            li.active
+                                a(href="/join") Join
+                        else 
+                            li
+                                a(href="/join") Join
