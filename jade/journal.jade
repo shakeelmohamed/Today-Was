@@ -14,20 +14,20 @@ html(lang="en")
 
                         .span6
                             .btn-group.row-fluid(data-toggle="buttons")
+                                // TODO: setup conditional classes so each rating has it's own color
                                 each val, index in {1:"Terrible", 2:"Bad", 3:"Okay", 4:"Good", 5:"Awesome"}
                                     if today && today.value == index
                                         label#rating.btn.btn-primary.active
-                                            input(type="radio" name="rating" value="#{index}")
+                                            input.rating-button(type="radio" name="rating" value="#{index}")
                                             = val
                                     else
                                         label#rating.btn.btn-primary
-                                            input(type="radio" name="rating" value="#{index}")
+                                            input.rating-button(type="radio" name="rating" value="#{index}")
                                             = val
                         br
                         br
-                        textarea.form-control(rows="5" name="journal" id="journal" placeholder="Journal entry for today" style="text-align:center;  min-width: 50px; max-width:600px; margin:0 auto;" required)
-                            if today && today.entry
-                                = today.entry
+                        textarea.form-control(name="journal" id="journal" placeholder="Journal entry for today" style="min-width: 50px; max-width:600px; margin:0 auto;" required).
+                            #{today.entry}
                         br
                         input.btn.btn-primary(type="submit" id="submit" name="submit" value=today && typeof today.value === "undefined" ? "Save" : "Update")
                 
@@ -47,11 +47,47 @@ html(lang="en")
         script.
             $(".active").click();
 
-            // TODO: make the form require JS to post
+            // TODO: make the form require JS to post, actually don't. Make it fail gracefully
             
-            // Temp save to sessionStorage, consider using localStorage
-            $("#journalForm").submit(function () {
-                sessionStorage.rating = $("#rating.active input").val();
-                sessionStorage.journal = $("#journal").text();
+            function disableElement(elem) {
+                $(elem).prop('disabled', true);
+            }
+            function enableElement(elem) {
+                $(elem).prop('disabled', false);
+            }
+            
+            $("#journalForm").submit(function (event) {
+                event.preventDefault();
+
+                // Temp save to localStorage
+                localStorage.rating = $("#rating.active input").val();
+                localStorage.journal = $("#journal").val().replace(/\s+$/,"");
+
+
+                var submitType = $("#submit").val();
+                $("#submit").button("loading");
+                disableElement("#journal");
+                $("label#rating").addClass("disabled");
+                $.post("/entries",
+                    {
+                        submit: submitType,
+                        rating: $("#rating.active input").val(),
+                        journal: $("#journal").val().replace(/\s+$/,""),
+                        ajax: true
+                    },
+                    function (data, textStatus) {
+                        if (textStatus === "success") {
+                            // TODO: show alert for success
+                            console.log(data);
+                        }
+                        else {
+                            // TODO: show alert for failure
+                            console.log(textStatus, data);
+                        }
+                        $("#submit").button("reset");
+                        enableElement("#journal");
+                        $("label#rating").removeClass("disabled");
+                    }
+                );
             });
             

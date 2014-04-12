@@ -28,6 +28,10 @@ module.exports = function (getViewData, config) {
             var post = req.body;
             var userID = req.session.userID;
 
+            if (post.ajax) {
+                console.log(post.ajax, "posting as ajax");
+            }
+
             // TODO: add a check to make sure post.rating and post.entry are also set, otherwise send them back w/ filled in info
             if (userID && userID.length > 0 && (post.submit === "Save" || post.submit === "Update")) {
                 var asyncStatus = [];
@@ -68,6 +72,7 @@ module.exports = function (getViewData, config) {
                 );
             }
             else {
+                /*
                 req.session.unsaved = {};
                 if (post.rating) {
                     req.session.unsaved.ratings = post.rating;
@@ -75,6 +80,8 @@ module.exports = function (getViewData, config) {
                 if (post.journal) {
                     req.session.unsaved.ratings = post.journal;
                 }
+                */
+                console.log(post);
                 //TODO: I should send them back to the page, and remember their rating + journal if not saved
                 res.redirect("journal");
             }
