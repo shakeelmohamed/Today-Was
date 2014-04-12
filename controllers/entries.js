@@ -28,9 +28,13 @@ module.exports = function (getViewData, config) {
             var post = req.body;
             var userID = req.session.userID;
 
+            console.log("req accepted", req.accepted);
             if (post.ajax) {
                 console.log(post.ajax, "posting as ajax");
             }
+
+            // TODO: replace all routing with res.format();
+            // in doing so, shove everything into a function and REALLY clean everything up.
 
             // TODO: add a check to make sure post.rating and post.entry are also set, otherwise send them back w/ filled in info
             if (userID && userID.length > 0 && (post.submit === "Save" || post.submit === "Update")) {
@@ -66,24 +70,30 @@ module.exports = function (getViewData, config) {
                             // Pass in the args necessary to getViewData, then I can "refill" the unsaved changes, add a button or something to
                             // say keep unsaved changes, or dump them.
                         }
-                        res.redirect("journal"); //TODO: I should send them back to the page, and remember their rating + journal if not saved
+                        if (post.ajax && err) {
+                            // TODO: handle his case when can't connect to DB: Error on journal entry insertion: { [Error: getaddrinfo ENOTFOUND] code: 'ENOTFOUND', errno: 'ENOTFOUND', syscall: 'getaddrinfo' }
+                            res.json({error: "Woah! The database did not like that data at all. Your entry hasn't been saved."});
+                        }
+                        else if (post.ajax) {
+                            res.json({status: "success"});
+                        }
+                        else {
+                            res.redirect("journal"); //TODO: I should send them back to the page, and remember their rating + journal if not saved    
+                        }
+                        
 
                     }
                 );
             }
             else {
-                /*
-                req.session.unsaved = {};
-                if (post.rating) {
-                    req.session.unsaved.ratings = post.rating;
-                }
-                if (post.journal) {
-                    req.session.unsaved.ratings = post.journal;
-                }
-                */
-                console.log(post);
                 //TODO: I should send them back to the page, and remember their rating + journal if not saved
-                res.redirect("journal");
+                if (post.ajax) {
+                    res.json({error: "Woah! We didn't get the data we expected, please try saving your entry again."});
+                }
+                else {
+                    res.redirect("journal");
+                }
+                
             }
         }
     };

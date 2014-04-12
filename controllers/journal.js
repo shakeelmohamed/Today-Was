@@ -25,13 +25,6 @@ module.exports = function (getViewData, config) {
 
             var viewData = getViewData("Journal", "journal", req.session.userID);
             viewData.today = {};
-            
-            /*
-            if (!isEmpty(req.session.unsaved)) {
-                // Do something with the unsaved data
-                console.log("unsaved journal entry for", req.session.userID, ":", req.session.unsaved);
-            }
-            */
 
 
             var asyncStatus = [];

@@ -4,6 +4,17 @@ html(lang="en")
     body
         include includes/nav
         .container
+            div#journalSuccess(class="alert alert-success alert-dismissable text-center" style="display:none")
+                button(type="button" class="close" data-dismiss="alert" aria-hidden="true")
+                    | &times;
+                strong Success! 
+                span Your journal entry was saved.
+            div#journalFail(class="alert alert-danger alert-dismissable text-center" style="display:none")
+                button(type="button" class="close" data-dismiss="alert" aria-hidden="true")
+                    | &times;
+                strong Error! 
+                span
+                // TODO: add the error message of why the entry save failed.
             .row.text-center.egress-template
                 header.page-header
                     h1 Welcome, #{user}
@@ -15,6 +26,7 @@ html(lang="en")
                         .span6
                             .btn-group.row-fluid(data-toggle="buttons")
                                 // TODO: setup conditional classes so each rating has it's own color
+                                // TODO: use mixins
                                 each val, index in {1:"Terrible", 2:"Bad", 3:"Okay", 4:"Good", 5:"Awesome"}
                                     if today && today.value == index
                                         label#rating.btn.btn-primary.active
@@ -27,7 +39,7 @@ html(lang="en")
                         br
                         br
                         textarea.form-control(name="journal" id="journal" placeholder="Journal entry for today" style="min-width: 50px; max-width:600px; margin:0 auto;" required).
-                            #{today.entry}
+                                #{today.entry}
                         br
                         input.btn.btn-primary(type="submit" id="submit" name="submit" value=today && typeof today.value === "undefined" ? "Save" : "Update")
                 
@@ -68,26 +80,39 @@ html(lang="en")
                 $("#submit").button("loading");
                 disableElement("#journal");
                 $("label#rating").addClass("disabled");
-                $.post("/entries",
-                    {
+                $("#journalSuccess").hide();
+                $("#journalFail").hide();
+                $.ajax({
+                    type: "POST",
+                    url: "/entries",
+                    data: JSON.stringify({
                         submit: submitType,
                         rating: $("#rating.active input").val(),
                         journal: $("#journal").val().replace(/\s+$/,""),
                         ajax: true
-                    },
-                    function (data, textStatus) {
-                        if (textStatus === "success") {
-                            // TODO: show alert for success
-                            console.log(data);
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data){
+                        if (data.hasOwnProperty("status") && data.status === "success") {
+                            // TODO: show the success alert
+                            $("#journalSuccess").show();
                         }
                         else {
-                            // TODO: show alert for failure
-                            console.log(textStatus, data);
+                            // TODO: show other alert(s)
+                            $("#journalFail span").text(data.error || "Woah, something went wrong and your journal entry didn't get saved.");
+                            $("#journalFail").show();
                         }
-                        $("#submit").button("reset");
-                        enableElement("#journal");
-                        $("label#rating").removeClass("disabled");
+                        console.log(data);
+                    },
+                    failure: function (errMsg) {
+                        // TODO: handle the case where there's no network connection
+                        console.log(errMsg);
                     }
-                );
+                }).done(function() {
+                    $("#submit").button("reset");
+                    enableElement("#journal");
+                    $("label#rating").removeClass("disabled");
+                });
             });
             
