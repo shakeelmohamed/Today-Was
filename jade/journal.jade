@@ -4,27 +4,25 @@ html(lang="en")
     body
         include includes/nav
         .container
-            div#journalSuccess(class="alert alert-success alert-dismissable text-center" style="display:none")
-                button(type="button" class="close" data-dismiss="alert" aria-hidden="true")
-                    | &times;
-                strong Success! 
-                span Your journal entry was saved.
-            div#journalFail(class="alert alert-danger alert-dismissable text-center" style=msg ? "" : "display:none")
-                button(type="button" class="close" data-dismiss="alert" aria-hidden="true")
-                    | &times;
-                strong Error! 
-                span
-                    if msg
-                        | #{msg}
-                // TODO: add the error message of why the entry save failed.
             .row.text-center.egress-template
                 header.page-header
                     h1 Welcome, #{user}
                 .row.text-center
+                    div#journalSuccess(class="alert alert-success alert-dismissable text-center" style="display:none")
+                        button(type="button" class="close" data-dismiss="alert" aria-hidden="true")
+                            | &times;
+                        strong Success! 
+                        span Your journal entry was saved.
+                    div#journalFail(class="alert alert-danger alert-dismissable text-center" style=msg ? "" : "display:none")
+                        button(type="button" class="close" data-dismiss="alert" aria-hidden="true")
+                            | &times;
+                        strong Error! 
+                        span
+                            if msg
+                                | #{msg}
+                        // TODO: add the error message of why the entry save failed.
                     form#journalForm(method="post" action="/entries")
                         p.lead How was your day?
-                        
-
                         .span6
                             // TODO: add in a noscript tag here to deal with when JS is disabled
                             .btn-group.row-fluid(data-toggle="buttons")
@@ -55,6 +53,13 @@ html(lang="en")
                                 |  - 
                                 strong= item.label
                             p.lead(style="word-wrap:break-word;")= item.entry
+                    if entries
+                        ul.media-list
+                            each item in entries
+                                li.media
+                                    .media-body.text-left
+                                        h4.media-heading.text-center #{item.created_date} - #{item.label}
+                                        = item.entry
                     else
                         p.lead You don't have any journal entries yet, what are you waiting for?
         
@@ -78,44 +83,56 @@ html(lang="en")
                 localStorage.rating = $("#rating.active input").val();
                 localStorage.journal = $("#journal").val().replace(/\s+$/,"");
 
-
-                var submitType = $("#submit").val();
-                $("#submit").button("loading");
-                disableElement("#journal");
-                $("label#rating").addClass("disabled");
-                $("#journalSuccess").hide();
-                $("#journalFail").hide();
-                $.ajax({
-                    type: "POST",
-                    url: "/entries",
-                    data: JSON.stringify({
-                        submit: submitType,
-                        rating: $("#rating.active input").val(),
-                        journal: $("#journal").val().replace(/\s+$/,""),
-                        ajax: true
-                    }),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (data){
-                        if (data.hasOwnProperty("status") && data.status === "success") {
-                            // TODO: show the success alert
-                            $("#journalSuccess").show();
+                var validationMessage = "";
+                if ($("#journal").val().replace(/\s+$/,"").length === 0) {
+                    validationMessage += "Enter a journal entry.";
+                }
+                if (!$(".rating-button").parent().hasClass("active")) {
+                    validationMessage += " Select a rating.";
+                }
+                if (validationMessage.length === 0) {
+                    var submitType = $("#submit").val();
+                    $("#submit").button("loading");
+                    disableElement("#journal");
+                    $("label#rating").addClass("disabled");
+                    $("#journalSuccess").hide();
+                    $("#journalFail").hide();
+                    $.ajax({
+                        type: "POST",
+                        url: "/entries",
+                        data: JSON.stringify({
+                            submit: submitType,
+                            rating: $("#rating.active input").val(),
+                            journal: $("#journal").val().replace(/\s+$/,""),
+                            ajax: true
+                        }),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (data){
+                            if (data.hasOwnProperty("status") && data.status === "success") {
+                                // TODO: show the success alert
+                                $("#journalSuccess").show();
+                            }
+                            else {
+                                // TODO: show other alert(s)
+                                $("#journalFail span").text(data.error || "Woah, something went wrong and your journal entry didn't get saved.");
+                                $("#journalFail").show();
+                            }
+                            console.log(data);
+                        },
+                        failure: function (errMsg) {
+                            // TODO: handle the case where there's no network connection
+                            console.log(errMsg);
                         }
-                        else {
-                            // TODO: show other alert(s)
-                            $("#journalFail span").text(data.error || "Woah, something went wrong and your journal entry didn't get saved.");
-                            $("#journalFail").show();
-                        }
-                        console.log(data);
-                    },
-                    failure: function (errMsg) {
-                        // TODO: handle the case where there's no network connection
-                        console.log(errMsg);
-                    }
-                }).done(function() {
-                    $("#submit").button("reset");
-                    enableElement("#journal");
-                    $("label#rating").removeClass("disabled");
-                });
+                    }).done(function() {
+                        $("#submit").button("reset");
+                        enableElement("#journal");
+                        $("label#rating").removeClass("disabled");
+                    });
+                }
+                else { // If there's an invalid entry...
+                    $("#journalFail span").text(validationMessage);
+                    $("#journalFail").show();
+                }
             });
             
