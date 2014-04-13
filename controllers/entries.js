@@ -47,6 +47,11 @@ module.exports = function (getViewData, config) {
                         },
                         function (client, callback) {
                             if (post.submit === "Save") {
+                                // TODO: if there's a funky HTML error or post.submit is set incorrectly
+                                // there's a STRONG chance of duplicating entries for a given day.
+                                // We want to prevent this, so add some async code do double check
+                                // that there really isn't already an entry, and if so throw an error?
+                                // or update it anyways??? Look into some possible use cases.
                                 asyncStatus.push("save");
                                 insertEntry(client, userID, post.rating, post.journal, callback);
                             }

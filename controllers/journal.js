@@ -9,6 +9,7 @@ module.exports = function (getViewData, config) {
         return offset;
     }
 
+    /*
     function isEmpty(obj) {
         for (var prop in obj) {
             if (obj.hasOwnProperty(prop)) {
@@ -17,7 +18,7 @@ module.exports = function (getViewData, config) {
         }
         return true;
     }
-
+    */
     return {
         get: function (req, res) {
             var pg = require("pg");

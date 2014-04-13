@@ -1,7 +1,7 @@
 {
   "name": "today-was",
   "version": "0.0.1",
-  "description": "A quality of life tracker",
+  "description": "A simple mood journal",
   "main": "app.js",
   "dependencies": {
     "async": "*",

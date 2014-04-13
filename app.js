@@ -1,6 +1,7 @@
 //var async = require("async"); //TODO: commented out for not since not using it here
 var express = require("express");
 var fs = require("fs");
+var path = require("path");
 //var pg = require("pg"); //TODO: commented out for not since not using it here
 
 var routes = require("./routes");
@@ -50,7 +51,8 @@ app.configure(function () {
     app.use(express.json());
     app.use(express.cookieParser());
     app.use(express.session({secret: "egress-secret-goes-right-here-now"})); // Not setting a max session length
-    app.use(express.static(__dirname + "/public"));
+    app.use(express.static(path.join(__dirname, "/public")));
+    app.use(express.favicon(path.join(__dirname, "public/img/favicon.ico")));
     app.use(app.router);
     app.use(function (req, res) {
         res.redirect("/404");

@@ -1,3 +1,4 @@
+/* TODO: commented out for now because none of these are being used.
 function validateJoin(username, email, password) {
     return validateUsername(username, "join") && validateEmail(email, "join") && validatePassword(password, "join");
 }
@@ -51,3 +52,5 @@ function validatePassword(password, context) {
 function containsSpace(value) {
     return value.indexOf(" ") !== -1;
 }
+
+*/

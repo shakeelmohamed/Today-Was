@@ -19,10 +19,10 @@ html(lang="en")
                             span
                                 if msg
                                     | #{msg}
-                    .container
-                        h1 How was your day?
-                        hr
         .text-center
+            .container
+                h1 How was your day?
+                hr
             form#journalForm(method="post" action="/entries")
                 
                 // TODO: add in a noscript tag here to deal with when JS is disabled
