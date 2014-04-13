@@ -45,13 +45,13 @@ function getEnvironmentVariables(filepath, existingVariables) {
 app.configure(function () {
     app.locals(config);
     app.locals.pretty = true;
-    app.set("views", __dirname + "/jade");
+    app.set("views", path.join(__dirname, "jade"));
     app.set("view engine", "jade");
     app.use(express.urlencoded());
     app.use(express.json());
     app.use(express.cookieParser());
     app.use(express.session({secret: "egress-secret-goes-right-here-now"})); // Not setting a max session length
-    app.use(express.static(path.join(__dirname, "/public")));
+    app.use(express.static(path.join(__dirname, "public")));
     app.use(express.favicon(path.join(__dirname, "public/img/favicon.ico")));
     app.use(app.router);
     app.use(function (req, res) {
