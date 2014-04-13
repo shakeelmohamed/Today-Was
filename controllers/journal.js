@@ -26,7 +26,6 @@ module.exports = function (getViewData, config) {
             var viewData = getViewData("Journal", "journal", req.session.userID, req.session.journalError || null);
             viewData.today = {};
 
-
             var asyncStatus = [];
             var client = new pg.Client(config.DATABASE_URL);
 

@@ -3,14 +3,15 @@ html(lang="en")
     include includes/head
     body
         include includes/nav
-        .container
-            .span12.text-center.egress-template
-                header.page-header.hidden-xs
-                    h1 Join #{siteName}
+        .container-fluid
+            .text-center.egress-template
                 if msg
                     .alert.alert-danger#error #{msg}
-                
-                include forms/join
-                br
+                .container
+                    header.hidden-xs
+                        h1 Join #{siteName}
+                        hr
+                    include forms/join
+                    br
         
         include includes/scripts
