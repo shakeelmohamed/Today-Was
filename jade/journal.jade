@@ -40,12 +40,11 @@ html(lang="en")
                                 = val
                 br
                 br
-                textarea.form-control(name="journal" id="journal" placeholder="Journal entry for today" style="min-width: 50px; max-width:600px; margin:0 auto;" required).
-                    #{today.entry}
+                textarea.form-control(name="journal" id="journal" placeholder="Journal entry for today" style="min-width: 50px; max-width:600px; margin:0 auto;" required)= today ? today.entry : ""
                 br
                 input.btn.btn-primary(type="submit" id="submit" name="submit" value=today && typeof today.value === "undefined" ? "Save" : "Update")
             
-            .row-fluid.text-center(style="min-width:50px; max-width:600px; margin:0 auto;")
+            .row-fluid.text-center(style="min-width:50px; max-width:600px; margin:0 auto; padding-left:10px; padding-right:10px;")
                 br
                 if entries
                     ul.media-list

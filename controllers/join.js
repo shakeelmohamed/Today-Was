@@ -79,7 +79,7 @@ module.exports = function (getViewData, config) {
                             res.render("join", getViewData("Join", "join", null, "Error: user registration failed"));
                         }
                         else {
-                            res.redirect("account");
+                            res.redirect("journal");
                         }
                     }
                 );
