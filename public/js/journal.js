@@ -48,7 +48,6 @@ $("#journalForm").submit(function (event) {
                     $("#journalFail span").text(data.error || "Woah, something went wrong and your journal entry didn't get saved.");
                     $("#journalFail").show();
                 }
-                console.log(data);
             },
             failure: function (errMsg) {
                 // TODO: handle the case where there's no network connection
@@ -105,7 +104,6 @@ function updateFeed() {
         },
         failure: function (errMsg) {
             // TODO: handle the case where there's no network connection
-            //console.log("error", errMsg);
             $("#journalFail span").text(errMsg || "Woah, something went wrong and we couldn't get your journal entries.");
         }
     }).done(function() {
