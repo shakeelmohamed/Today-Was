@@ -36,8 +36,9 @@ module.exports = function (getViewData, config) {
             // TODO: replace all routing with res.format();
             // in doing so, shove everything into a function and REALLY clean everything up.
 
+            // TODO: I can make this more specific, and do more specific error handling
             // TODO: add a check to make sure post.rating and post.entry are also set, otherwise send them back w/ filled in info
-            if (userID && userID.length > 0 && (post.submit === "Save" || post.submit === "Update")) {
+            if (userID && userID.length > 0 && (post.submit === "Save" || post.submit === "Update") && post.rating && post.journal) {
                 var asyncStatus = [];
                 var client = new pg.Client(config.DATABASE_URL);
                 async.waterfall([

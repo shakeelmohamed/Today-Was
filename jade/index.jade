@@ -3,22 +3,24 @@ html(lang="en")
     include includes/head
     body
         include includes/nav
+        include includes/noscript
         .container-fluid
-            .text-center.egress-template
-                if msg
-                    .alert.alert-danger#error #{msg}
-                .container
-                    header
-                        h1 Welcome to #{siteName}
-                        hr
-                p.lead.hidden-xs
-                    img.img-responsive(style="margin: 0 auto; min-width:200px; min-height:112px;" src="img/good_day.gif" alt="I got to say it was a good day, a quote from Ice Cube's 'Today Was a Good Day'" title="I got to say it was a good day")
-                p.lead.hidden-xs Was it really?
-                p.lead
-                    a(href="/join")
-                        strong Join
-                    |  to begin rating your days.
-                p.lead
-                    a(href="/signin") I already have an account
+            .row-fluid.egress-template
+                .row-fluid.text-center
+                    .container
+                        if msg
+                            .alert.alert-danger#error #{msg}
+                        header
+                            h1 Welcome to #{siteName}
+                            hr
+                    p.lead.hidden-xs
+                        img.img-responsive(style="margin: 0 auto; min-width:200px; min-height:112px;" src="img/good_day.gif" alt="I got to say it was a good day, a quote from Ice Cube's 'Today Was a Good Day'" title="I got to say it was a good day")
+                    p.lead.hidden-xs Was it really?
+                    p.lead
+                        a(href="/join")
+                            strong Join
+                        |  to begin rating your days.
+                    p.lead
+                        a(href="/signin") I already have an account
 
         include includes/scripts

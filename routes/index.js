@@ -21,6 +21,7 @@ exports.init = function (app) {
 
     app.post("/entries", isUserLoggedIn, controllers.entries.post);
 
+    app.post("/feed", controllers.feed.post);
 
     function getViewData(title, pathSuffix, userID, message) {
         // Set app.locals in web.js; this function gets passed around to all controllers

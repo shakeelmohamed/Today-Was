@@ -3,22 +3,17 @@ html(lang="en")
     include includes/head
     body
         include includes/nav
+        include includes/noscript
         .container-fluid
-            .text-center.egress-template
-                if msg
-                    .alert.alert-danger#error #{msg}
-                .container
-                    header.hidden-xs
-                        h1 Sign in to #{siteName}
-                        hr
-                    include forms/signin
+            .row-fluid.egress-template
+                .row-fluid.text-center
+                    .container
+                        if msg
+                            .alert.alert-danger#error #{msg}
+                        header.hidden-xs
+                            h1 Sign in to #{siteName}
+                            hr
+                        include forms/signin
         
         include includes/scripts
-        script.
-            localStorage.clear();
-            if (localStorage.journal) {
-                delete localStorage.journal;
-            }
-            if (localStorage.rating) {
-                delete localStorage.rating;
-            }
+        script(src="js/clearLocalStorage.js")
