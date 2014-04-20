@@ -47,7 +47,7 @@ module.exports = function (getViewData, config) {
 
             //TODO: add some data validation: email, password format, string length, SQL sanitize
             if (!areFieldsSet(post) && post.register !== "register") {
-                res.render("join", getViewData("Join", "join", req.session.userID, "Error: user registration failed"));
+                res.render("join", getViewData("Join", "join", req.session.userID, req.session.userEmail, "Error: user registration failed"));
             }
             else {
                 var asyncStatus = [];

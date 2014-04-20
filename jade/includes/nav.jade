@@ -29,6 +29,9 @@
                         else
                             li
                                 a(href="/journal") #{user}'s journal
+                        if feedbackForm
+                            li
+                                a(href="#{feedbackForm}/def/Field1=#{userEmail}&Field4=#{user}") Feedback
                         if "signout" === loc
                             li.active
                                 a(href="/signout") Sign Out

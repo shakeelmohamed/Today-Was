@@ -78,6 +78,7 @@ module.exports = function (getViewData, config) {
                         function (result, callback) {
                             asyncStatus.push("sign in success");
                             req.session.userID = user.username;
+                            req.session.userEmail = user.email;
                             callback(null);
                         }
                     ],
@@ -87,7 +88,7 @@ module.exports = function (getViewData, config) {
 
                         if (err) {
                             console.log("ERROR", err);
-                            res.render("signin", getViewData("Sign in", "signin", req.session.userID, "Error: sign in failed"));
+                            res.render("signin", getViewData("Sign in", "signin", req.session.userID, req.session.userEmail, "Error: sign in failed"));
                         }
                         res.redirect("journal");
                     }

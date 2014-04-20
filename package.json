@@ -11,33 +11,33 @@
     "pg": "2.x"
   },
   "devDependencies": {
-      "grunt": "~0.4.2",
-      "grunt-contrib-clean": "~0.4.0",
-      "grunt-contrib-jshint": "~0.6.3",
-      "grunt-contrib-jade": "~0.9.1"
+    "grunt": "~0.4.2",
+    "grunt-contrib-clean": "~0.4.0",
+    "grunt-contrib-jshint": "~0.6.3",
+    "grunt-contrib-jade": "~0.9.1"
   },
   "jshintConfig": {
-      "curly": true,
-      "camelcase": true,
-      "indent": 4,
-      "loopfunc": true,
-      "newcap": true,
-      "node": true,
-      "quotmark": "double",
-      "trailing": true,
-      "unused": true,
-      "white": true
+    "curly": true,
+    "camelcase": true,
+    "indent": 4,
+    "loopfunc": true,
+    "newcap": true,
+    "node": true,
+    "quotmark": "double",
+    "trailing": true,
+    "unused": true,
+    "white": true
   },
   "keywords": [
     "egress"
   ],
-  "scripts" : {
+  "scripts": {
     "start": "node app.js"
   },
   "author": {
     "name": "Shakeel Mohamed"
   },
-  "repository" : { 
+  "repository": {
     "type": "git",
     "url": "http://github.com/shakeelmohamed/today-was.git"
   },

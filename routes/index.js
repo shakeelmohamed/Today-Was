@@ -23,14 +23,16 @@ exports.init = function (app) {
 
     app.post("/feed", controllers.feed.post);
 
-    function getViewData(title, pathSuffix, userID, message) {
+    function getViewData(title, pathSuffix, userID, email, message) {
         // Set app.locals in web.js; this function gets passed around to all controllers
         return {
             siteName: app.locals.siteName,
             author: app.locals.siteAuthor,
             title: title,
+            feedbackForm: app.locals.feedbackForm,
             loc: pathSuffix,
             user: userID,
+            userEmail: email,
             msg: message
         };
     }
