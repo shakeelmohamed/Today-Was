@@ -12,8 +12,6 @@
             // Collect the nav links, forms, and other content for toggling
             .collapse.navbar-collapse
                 ul.nav.navbar-nav.navbar-right
-                    // TODO: use mixins
-                    // For the actual navigation items, follow the format of {'url': 'visiblename' }
                     for navItem, path in {"": "Home", "about": "About"}
                         if path === loc
                             li.active

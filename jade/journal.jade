@@ -26,8 +26,6 @@ html(lang="en")
                 hr
             form#journalForm(method="post" action="/entries")
                 .btn-group.row(data-toggle="buttons")
-                    // TODO: setup conditional classes so each rating has it's own color?
-                    // TODO: use mixins
                     each val, index in {1:"Terrible", 2:"Bad", 3:"Okay", 4:"Good", 5:"Awesome"}
                         if today && today.value == index
                             label#rating.btn.btn-primary.active
