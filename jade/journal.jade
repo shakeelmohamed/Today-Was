@@ -1,22 +1,53 @@
-include includes/head
-body
-    include includes/nav
-    .container
-        .row.text-center.tw-template
-            h1 Journal
-            p Welcome to your journal #{user}
-        .row.text-center
-            form
-                label(style="padding:4px;") 1 
-                    input(type="radio" name="rating" value="1")
-                label(style="padding:4px;") 2 
-                    input(type="radio" name="rating" value="2")
-                label(style="padding:4px;") 3 
-                    input(type="radio" name="rating" value="3")
-                label(style="padding:4px;") 4 
-                    input(type="radio" name="rating" value="4")
-                label(style="padding:4px;") 5 
-                    input(type="radio" name="rating" value="5")
-
-    include includes/scripts
-    include includes/foot
+doctype html
+html(lang="en")
+    include includes/head
+    body
+        include includes/nav
+        include includes/noscript
+        .container-fluid
+            .row-fluid.egress-template
+                .row-fluid.text-center
+                    .container
+                        #journalSuccess(class="alert alert-success alert-dismissable text-center" style="display:none")
+                            button(type="button" class="close" data-dismiss="alert" aria-hidden="true")
+                                | &times;
+                            strong Success! 
+                            span Your journal entry was saved.
+                        #journalFail(class="alert alert-danger alert-dismissable text-center" style=msg ? "" : "display:none")
+                            button(type="button" class="close" data-dismiss="alert" aria-hidden="true")
+                                | &times;
+                            strong Error! 
+                            span
+                                if msg
+                                    | #{msg}
+        .text-center.hidden#journalContentHidden
+            .container
+                h1 How was your day?
+                hr
+            form#journalForm(method="post" action="/entries")
+                .btn-group.row(data-toggle="buttons")
+                    each val, index in {1:"Terrible", 2:"Bad", 3:"Okay", 4:"Good", 5:"Awesome"}
+                        if today && today.value == index
+                            label#rating.btn.btn-primary.active
+                                input.rating-button(type="radio" name="rating" value="#{index}")
+                                = val
+                        else
+                            label#rating.btn.btn-primary
+                                input.rating-button(type="radio" name="rating" value="#{index}")
+                                = val
+                br
+                br
+                textarea.form-control(name="journal" id="journal" placeholder="Journal entry for today" style="min-width: 50px; max-width:600px; margin:0 auto;" required)= today ? today.entry : ""
+                br
+                input.btn.btn-primary.btn-lg.big-button(type="submit" id="submit" name="submit" value=today && typeof today.value === "undefined" ? "Save" : "Update")
+            
+            .row-fluid.text-center(style="min-width:50px; max-width:600px; margin:0 auto; padding-left:10px; padding-right:10px;")
+                br
+                br
+                if entries
+                    ul.media-list#journalFeed
+                else
+                    p.lead You don't have any journal entries yet, what are you waiting for?
+        
+        include includes/scripts
+        script(src="js/journal.js")

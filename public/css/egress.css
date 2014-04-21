@@ -1,0 +1,19 @@
+body {
+    padding-top: 20px;
+    width: 100%;
+}
+.centered-form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+.centered-form input {
+    margin-bottom: 10px;
+}
+.big-button {
+    width: 150px;
+    max-width: 150px;
+}
+
+#error {
+    font-weight: bold;
+}

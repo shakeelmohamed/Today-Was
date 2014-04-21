@@ -1,18 +1,47 @@
 {
-  "name": "Today-Was...",
+  "name": "today-was",
   "version": "0.0.1",
-  "repository" : { 
-    "type": "git",
-    "url": "http://github.com/shakeelmohamed/today-was.git"
-  },
+  "description": "A simple mood journal",
+  "main": "app.js",
   "dependencies": {
-    "bcrypt-nodejs": "0.x.3",
+    "async": "*",
+    "bcrypt-nodejs": "0.0.3",
     "express": "3.x",
     "jade": "0.35.0",
     "pg": "2.x"
   },
-  "engines": {
-    "node": "0.10.x",
-    "npm": "1.2.x"
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-clean": "~0.4.0",
+    "grunt-contrib-jshint": "~0.6.3",
+    "grunt-contrib-jade": "~0.9.1"
+  },
+  "jshintConfig": {
+    "curly": true,
+    "camelcase": true,
+    "indent": 4,
+    "loopfunc": true,
+    "newcap": true,
+    "node": true,
+    "quotmark": "double",
+    "trailing": true,
+    "unused": true,
+    "white": true
+  },
+  "keywords": [
+    "egress"
+  ],
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": {
+    "name": "Shakeel Mohamed"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/shakeelmohamed/today-was.git"
+  },
+  "engine": {
+    "node": "0.10.x"
   }
 }

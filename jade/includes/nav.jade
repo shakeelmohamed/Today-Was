@@ -1,35 +1,51 @@
-script.
-    var user = '!{user}';
-
-// Follow the format of {'url': 'visiblename' }
-- var navItems = {'': 'Home', 'about': 'About'}
-.navbar.navbar-inverse.navbar-fixed-top
-  .container
-    .navbar-header
-      button(type="button", class="navbar-toggle", data-toggle="collapse", data-target=".navbar-collapse")
-        span.icon-bar
-        span.icon-bar
-        span.icon-bar
-      a(class="navbar-brand" href="./") Today Was...
-    .collapse.navbar-collapse
-        ul.nav.navbar-nav
-            - for navItem, path in navItems
-                if path === loc
-                    li.active
-                        a(href= '/' + path)= navItem
-                else
-                    li
-                        a(href= '/' + path)= navItem
-            
-            li
-                - if(user)
-                    a(href="/logout" style="color:whitesmoke") Logout
-                - else
-                    a(href="/join" style="color:whitesmoke") Join
-        ul.nav.navbar-nav.navbar-right
-            li
-                - if(user)
-                    a(style="color:whitesmoke;") Hello, #{user}
-                - else
-                    a(href="/login" style="color:whitesmoke") Login
-            
+.container
+    .navbar.navbar-inverse(role="navigation")
+        .container-fluid
+            // Brand and toggle get grouped for better mobile display
+            .navbar-header
+                button(type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse")
+                    span.sr-only Toggle navigation
+                    span.icon-bar
+                    span.icon-bar
+                    span.icon-bar
+                a(class="navbar-brand" href="./") #{siteName}
+            // Collect the nav links, forms, and other content for toggling
+            .collapse.navbar-collapse
+                ul.nav.navbar-nav.navbar-right
+                    for navItem, path in {"": "Home", "about": "About"}
+                        if path === loc
+                            li.active
+                                a(href= "/" + path)= navItem
+                        else
+                            li
+                                a(href= "/" + path)= navItem
+                    
+                    if user
+                        if "journal" === loc
+                            li.active
+                                a(href="/journal") #{user}'s journal
+                        else
+                            li
+                                a(href="/journal") #{user}'s journal
+                        if feedbackForm
+                            li
+                                a(href="#{feedbackForm}/def/Field1=#{userEmail}&Field4=#{user}") Feedback
+                        if "signout" === loc
+                            li.active
+                                a(href="/signout") Sign Out
+                        else
+                            li
+                                a(href="/signout") Sign Out
+                    else
+                        if "signin" === loc
+                            li.active
+                                a(href="/signin") Sign In
+                        else
+                            li
+                                a(href="/signin") Sign In
+                        if "join" === loc
+                            li.active
+                                a(href="/join") Join
+                        else 
+                            li
+                                a(href="/join") Join

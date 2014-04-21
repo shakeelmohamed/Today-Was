@@ -1,21 +1,27 @@
-include includes/head
-body
-    include includes/nav
-    .container
-        .row.text-center.tw-template
-            h1 About
-            p 
-                | Today Was... is a simple quality of life tracker. <br>
-                | The goal of this application is to gain insights into your quality of life, over time <br>
-                | by recording your daily experience of life on a scale of 1 to 5.
-                | <br>
-                | "Ain't nothin' to it, gangsta rap made me do it" - Ice Cube
-            p 
-                | Today Was... is developed by 
-                a(href="http://twitter.com/_Shakeel", target="_blank") Shakeel Mohamed
-                | <br>
-                | Source code is available on 
-                a(href="http://github.com/shakeelmohamed/today-was", target="_blank") Github.
+doctype html
+html(lang="en")
+    include includes/head
+    body
+        include includes/nav
+        include includes/noscript
+        .container-fluid
+            .row-fluid.egress-template
+                .row-fluid.text-center
+                    .container
+                        if msg
+                            .alert.alert-danger#error #{msg}
+                        header
+                            h1 #{siteDescription}.
+                            hr
+                        .text-left(style="min-width:50px; max-width:600px; margin:0 auto;")
+                            p.lead The goal of #{siteName} is to help you gain insights into your quality of life, over time 
+                                | by recording your daily experience of life on a scale from terrible to awesome.
+                        p.lead
+                            em "Ain't nothin' to it, gangsta rap made me do it"
+                            br
+                            | - Ice Cube
+                        p.lead
+                            | #{siteName} is developed by 
+                            a(href="http://twitter.com/_Shakeel", target="_blank") #{siteAuthor}
 
-    include includes/scripts
-    include includes/foot
+        include includes/scripts
