@@ -26,15 +26,16 @@ html(lang="en")
                 hr
             form#journalForm(method="post" action="/entries")
                 .btn-group.row(data-toggle="buttons")
-                    each val, index in {1:"Terrible", 2:"Bad", 3:"Okay", 4:"Good", 5:"Awesome"}
-                        if today && today.value == index
-                            label#rating.btn.btn-primary.active
-                                input.rating-button(type="radio" name="rating" value="#{index}")
-                                = val
-                        else
-                            label#rating.btn.btn-primary
-                                input.rating-button(type="radio" name="rating" value="#{index}")
-                                = val
+                    each v, i in [{5:"Awesome"}, {4:"Good"}, {3:"Okay"}, {2:"Bad"}, {1:"Terrible"}]
+                        each val, index in v 
+                            if today && today.value == index
+                                label#rating.btn.btn-primary.active
+                                    input.rating-button(type="radio" name="rating" value="#{index}")
+                                    = val
+                            else
+                                label#rating.btn.btn-primary
+                                    input.rating-button(type="radio" name="rating" value="#{index}")
+                                    = val
                 br
                 br
                 textarea.form-control(name="journal" id="journal" placeholder="Journal entry for today" style="min-width: 50px; max-width:600px; margin:0 auto;" required)= today ? today.entry : ""
@@ -44,10 +45,12 @@ html(lang="en")
             .row-fluid.text-center(style="min-width:50px; max-width:600px; margin:0 auto; padding-left:10px; padding-right:10px;")
                 br
                 br
-                if entries
+                if entries && entries.length > 0
                     ul.media-list#journalFeed
                 else
-                    p.lead You don't have any journal entries yet, what are you waiting for?
+                    p.lead You don't have any journal entries yet.
+                        br
+                        | What are you waiting for?
         
         include includes/scripts
         script(src="js/journal.js")
