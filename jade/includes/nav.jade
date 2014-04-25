@@ -1,7 +1,10 @@
+mixin navigationItem(path, label)
+    li(class=path===loc ? "active" : "")
+        a(href="/"+path)= label
+
 .container
     .navbar.navbar-inverse(role="navigation")
         .container-fluid
-            // Brand and toggle get grouped for better mobile display
             .navbar-header
                 button(type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse")
                     span.sr-only Toggle navigation
@@ -9,43 +12,19 @@
                     span.icon-bar
                     span.icon-bar
                 a(class="navbar-brand" href="./") #{siteName}
-            // Collect the nav links, forms, and other content for toggling
             .collapse.navbar-collapse
                 ul.nav.navbar-nav.navbar-right
-                    for navItem, path in {"": "Home", "about": "About"}
-                        if path === loc
-                            li.active
-                                a(href= "/" + path)= navItem
-                        else
-                            li
-                                a(href= "/" + path)= navItem
+                    for label, path in {"": "Home", "about": "About"}
+                        +navigationItem(path, label)
                     
                     if user
-                        if "journal" === loc
-                            li.active
-                                a(href="/journal") #{user}'s Journal
-                        else
-                            li
-                                a(href="/journal") #{user}'s Journal
+                        +navigationItem("journal", user+"'s Journal")
+
                         if feedbackForm
-                            li
+                            +navigationItem(feedbackForm+"/def/Field1="+userEmail+"&Field4="+user, "Feedback")
+                            //li
                                 a(href="#{feedbackForm}/def/Field1=#{userEmail}&Field4=#{user}") Feedback
-                        if "signout" === loc
-                            li.active
-                                a(href="/signout") Sign Out
-                        else
-                            li
-                                a(href="/signout") Sign Out
+                        +navigationItem("signout", "Sign Out")
                     else
-                        if "signin" === loc
-                            li.active
-                                a(href="/signin") Sign In
-                        else
-                            li
-                                a(href="/signin") Sign In
-                        if "join" === loc
-                            li.active
-                                a(href="/join") Join
-                        else 
-                            li
-                                a(href="/join") Join
+                        +navigationItem("signin", "Sign In")
+                        +navigationItem("join", "Join")
