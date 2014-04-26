@@ -41,7 +41,7 @@ module.exports = function (getViewData, config) {
                         //      based on what's returned, basically manually doing an iteration in JS
                         //      which would be more effective from every perspective because I wouldn't have
                         //      multiple queries, or multiple uses of client, thus optimizing everything.
-                        var justToday = "SELECT ratings.value, EXTRACT(epoch FROM user_ratings.created_date) AS created_date, user_ratings.entry FROM user_ratings JOIN ratings ON ratings.id = user_ratings.id_ratings WHERE (user_ratings.id_users = (select users.id from users where users.username=$1) AND (date_trunc('day', localtimestamp AT TIME ZONE $2) = date_trunc('day', user_ratings.created_date AT TIME ZONE $2))) LIMIT 1;";
+                        var justToday = "SELECT ratings.value, EXTRACT(epoch FROM user_ratings.created_date) AS created_date, user_ratings.entry FROM user_ratings JOIN ratings ON ratings.id = user_ratings.id_ratings WHERE (user_ratings.id_users = (SELECT users.id FROM users WHERE users.username=$1) AND (date_trunc('day', localtimestamp AT TIME ZONE $2) = date_trunc('day', user_ratings.created_date AT TIME ZONE $2))) LIMIT 1;";
                         client.query(justToday, [req.session.userID, getGMTOffset()], callback);
                     },
                     function (result, callback) {
@@ -50,7 +50,8 @@ module.exports = function (getViewData, config) {
                             viewData.today = result.rows[0];
                         }
                         // TODO: consider adding pagination (auto?), or some other way of grouping entries
-                        client.query("select user_ratings.entry, ratings.label, EXTRACT(epoch from user_ratings.created_date) as created_date from user_ratings join ratings on user_ratings.id_ratings = ratings.id where user_ratings.id_users = (select users.id from users where users.username=$1) order by user_ratings.created_date DESC;", [req.session.userID], callback);
+                        client.query("SELECT user_ratings.entry, ratings.label, EXTRACT(epoch FROM user_ratings.created_date) AS created_date FROM user_ratings JOIN ratings ON user_ratings.id_ratings = ratings.id WHERE user_ratings.id_users = (SELECT users.id FROM users WHERE users.username=$1) ORDER BY user_ratings.created_date DESC;",
+                            [req.session.userID], callback);
                     },
                     function (result, callback) {
                         var rows = result.rows;

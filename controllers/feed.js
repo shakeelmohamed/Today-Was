@@ -18,7 +18,8 @@ module.exports = function (getViewData, config) {
                                 },
                                 function (client, callback) {
                                     // TODO: consider adding pagination (auto?), or some other way of grouping entries
-                                    client.query("select user_ratings.entry, ratings.label, EXTRACT(epoch from user_ratings.created_date) as created_date from user_ratings join ratings on user_ratings.id_ratings = ratings.id where user_ratings.id_users = (select users.id from users where users.username=$1) order by user_ratings.created_date DESC;", [userID], callback);
+                                    client.query("SELECT user_ratings.entry, ratings.label, EXTRACT(epoch FROM user_ratings.created_date) AS created_date FROM user_ratings JOIN ratings ON user_ratings.id_ratings=ratings.id WHERE user_ratings.id_users=(select users.id FROM users WHERE users.username=$1) ORDER BY user_ratings.created_date DESC;",
+                                        [userID], callback);
                                 },
                                 function (result, callback) {
                                     var rows = result.rows;

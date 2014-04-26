@@ -60,7 +60,7 @@ module.exports = function (getViewData, config) {
                         },
                         function (client, callback) {
                             asyncStatus.push("client - insert");
-                            client.query("insert into users (id, username, email, secret, registration_ip, registration_timestamp) values (DEFAULT, $1, $2, $3, $4, DEFAULT)", [post.user, post.email, bcrypt.hashSync(post.password), getClientIp(req)], callback);
+                            client.query("INSERT INTO users (id, username, email, secret, registration_ip, registration_timestamp) VALUES (DEFAULT, $1, $2, $3, $4, DEFAULT)", [post.user, post.email, bcrypt.hashSync(post.password), getClientIp(req)], callback);
                         },
                         function (result, callback) {
                             asyncStatus.push("successful registration");

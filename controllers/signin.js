@@ -69,7 +69,7 @@ module.exports = function (getViewData, config) {
                                 user = result.rows[0];
                                 console.log("Sign in worked for", user.username);
                                 // Insert the login entry
-                                client.query("INSERT INTO logins VALUES (DEFAULT, $1, DEFAULT, $2)", [getClientIp(req), user.id], callback);
+                                client.query("INSERT INTO logins (id, ip, timestamp, id_users) VALUES (DEFAULT, $1, DEFAULT, $2)", [getClientIp(req), user.id], callback);
                             }
                             else {
                                 callback("Invalid user.");

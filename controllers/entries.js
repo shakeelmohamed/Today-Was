@@ -10,13 +10,13 @@ module.exports = function (getViewData, config) {
     }
     function insertEntry(client, userID, rating, journal, done) {
         rating = parseInt(rating, 10);
-        client.query("insert into user_ratings values (DEFAULT, (select users.id from users where users.username=$1), $2, $3)",
+        client.query("INSERT INTO user_ratings (id, id_users, id_ratings, entry) VALUES (DEFAULT, (SELECT users.id FROM users WHERE users.username=$1), $2, $3)",
             [userID, rating, journal],
             done);
     }
     function updateEntry(client, userID, rating, journal, done) {
         rating = parseInt(rating, 10);
-        client.query("UPDATE user_ratings SET id_ratings=$2, entry=$3, edited_date=DEFAULT WHERE id = (SELECT id FROM user_ratings WHERE id_users=(select users.id from users where users.username=$1) AND (date_trunc('day', localtimestamp AT TIME ZONE $4) = date_trunc('day', user_ratings.created_date AT TIME ZONE $4)));",
+        client.query("UPDATE user_ratings SET id_ratings=$2, entry=$3, edited_date=DEFAULT WHERE id=(SELECT id FROM user_ratings WHERE id_users=(SELECT users.id FROM users WHERE users.username=$1) AND (date_trunc('day', localtimestamp AT TIME ZONE $4) = date_trunc('day', user_ratings.created_date AT TIME ZONE $4)));",
             [userID, rating, journal, getGMTOffset()],
             done);
     }
