@@ -45,12 +45,11 @@ html(lang="en")
             .row-fluid.text-center(style="min-width:50px; max-width:600px; margin:0 auto; padding-left:10px; padding-right:10px;")
                 br
                 br
-                if entries && entries.length > 0
-                    ul.media-list#journalFeed
-                else
-                    p.lead You don't have any journal entries yet.
+                if !entries || entries.length === 0
+                    p.lead#noJournals You don't have any journal entries yet.
                         br
                         | What are you waiting for?
+                ul.media-list#journalFeed
         
         include includes/scripts
         script(src="js/journal.js")

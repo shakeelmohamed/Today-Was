@@ -91,6 +91,9 @@ function updateFeed() {
         dataType: "json",
         success: function (data){
             if (data.hasOwnProperty("feed")) {
+                if (data.feed.length > 0) {
+                    $("#noJournals").hide();
+                }
                 var feedHTML = "";
                 for (var i = 0; i < data.feed.length; i++) {
                     var cur = data.feed[i];
@@ -99,6 +102,7 @@ function updateFeed() {
                 $("#journalFeed").html(feedHTML);
             }
             else {
+                $("#noJournals").show();
                 $("#journalFail span").text(data.error || "Woah, something went wrong and we couldn't get your journal entries.");
             }
         },
