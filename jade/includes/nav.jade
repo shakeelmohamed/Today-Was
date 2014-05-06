@@ -21,8 +21,7 @@ mixin navigationItem(path, label)
                         +navigationItem("journal", user+"'s Journal")
 
                         if feedbackForm
-                            +navigationItem(feedbackForm+"/def/Field1="+userEmail+"&Field4="+user, "Feedback")
-                            //li
+                            li
                                 a(href="#{feedbackForm}/def/Field1=#{userEmail}&Field4=#{user}") Feedback
                         +navigationItem("signout", "Sign Out")
                     else
