@@ -67,6 +67,7 @@ module.exports = function (getViewData, config) {
                             console.log("Registration worked for", post.user);
                             // TODO: send the confirmation email, also set a variable for confirmed=false
                             req.session.userID = post.user;
+                            req.session.userEmail = post.email;
                             callback(null);
                         }
                     ],
