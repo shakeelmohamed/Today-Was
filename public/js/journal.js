@@ -73,7 +73,7 @@ function makeJournalEntry(date, label, journal) {
     entry += "<h4 class=\"media-heading text-center\">";
     entry += date + " - " + label;
     entry += "</h4>";
-    entry += "<p style=\"word-wrap:break-word;\">";
+    entry += "<p style=\"word-wrap:break-word; white-space: pre;\">";
     entry += journal;
     entry += "</p>";
     entry += "<hr>";
