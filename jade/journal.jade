@@ -1,0 +1,55 @@
+doctype html
+html(lang="en")
+    include includes/head
+    body
+        include includes/nav
+        include includes/noscript
+        .container-fluid
+            .row-fluid.egress-template
+                .row-fluid.text-center
+                    .container
+                        #journalSuccess(class="alert alert-success alert-dismissable text-center" style="display:none")
+                            button(type="button" class="close" data-dismiss="alert" aria-hidden="true")
+                                | &times;
+                            strong Success! 
+                            span Your journal entry was saved.
+                        #journalFail(class="alert alert-danger alert-dismissable text-center" style=msg ? "" : "display:none")
+                            button(type="button" class="close" data-dismiss="alert" aria-hidden="true")
+                                | &times;
+                            strong Error! 
+                            span
+                                if msg
+                                    | #{msg}
+        .text-center.hidden#journalContentHidden
+            .container
+                h1 How was your day?
+                hr
+            form#journalForm(method="post" action="/entries")
+                .btn-group.row(data-toggle="buttons")
+                    each v, i in [{5:"Awesome"}, {4:"Good"}, {3:"Okay"}, {2:"Bad"}, {1:"Terrible"}]
+                        each val, index in v 
+                            if today && today.value == index
+                                label#rating.btn.btn-primary.active
+                                    input.rating-button(type="radio" name="rating" value="#{index}")
+                                    = val
+                            else
+                                label#rating.btn.btn-primary
+                                    input.rating-button(type="radio" name="rating" value="#{index}")
+                                    = val
+                br
+                br
+                textarea.form-control(name="journal" id="journal" placeholder="Journal entry for today" style="min-width: 50px; max-width:600px; margin:0 auto;" required)= today ? today.entry : ""
+                br
+                input.btn.btn-primary.btn-lg.big-button(type="submit" id="submit" name="submit" value=today && typeof today.value === "undefined" ? "Save" : "Update")
+            
+            .row-fluid.text-center(style="min-width:50px; max-width:600px; margin:0 auto; padding-left:10px; padding-right:10px;")
+                br
+                br
+                if !entries || entries.length === 0
+                    p.lead#noJournals You don't have any journal entries yet.
+                        br
+                        | What are you waiting for?
+                ul.media-list#journalFeed
+        
+        include includes/scripts
+        script(src="js/journal.js")

@@ -1,0 +1,29 @@
+mixin navigationItem(path, label)
+    li(class=path===loc ? "active" : "")
+        a(href="/"+path)= label
+
+.container
+    .navbar.navbar-inverse(role="navigation")
+        .container-fluid
+            .navbar-header
+                button(type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse")
+                    span.sr-only Toggle navigation
+                    span.icon-bar
+                    span.icon-bar
+                    span.icon-bar
+                a(class="navbar-brand" href="./") #{siteName}
+            .collapse.navbar-collapse
+                ul.nav.navbar-nav.navbar-right
+                    for label, path in {"": "Home", "about": "About"}
+                        +navigationItem(path, label)
+                    
+                    if user
+                        +navigationItem("journal", user+"'s Journal")
+
+                        if feedbackForm
+                            li
+                                a(href="#{feedbackForm}/def/Field1=#{userEmail}&Field4=#{user}") Feedback
+                        +navigationItem("signout", "Sign Out")
+                    else
+                        +navigationItem("signin", "Sign In")
+                        +navigationItem("join", "Join")

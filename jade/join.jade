@@ -1,0 +1,19 @@
+doctype html
+html(lang="en")
+    include includes/head
+    body
+        include includes/nav
+        include includes/noscript
+        .container-fluid
+            .row-fluid.egress-template
+                .row-fluid.text-center
+                    .container
+                        if msg
+                            .alert.alert-danger#error #{msg}
+                        header.hidden-xs
+                            h1 Join #{siteName}
+                            hr
+                        include forms/join
+                        br
+        
+        include includes/scripts

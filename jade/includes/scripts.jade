@@ -1,0 +1,14 @@
+//Place references to your scripts here
+script(src="js/jquery.js")
+script(src="js/bootstrap.min.js")
+script(src="js/validator.min.js")
+script(src="js/egress-validators.js")
+script(src="js/googleanalytics.js")
+script.
+    if(window.location.href !== "http://today-was.herokuapp.com/" && window.location.href !== "http://todaywas.herokuapp.com/") {
+        var msg = "<div class=\"container\"><div class=\"alert alert-danger text-center\"><strong>You are on a development server.</strong></div></div>";
+        $(".container").eq(0).next().html(msg + $(".container").eq(0).next().html());
+    }
+    
+    $(".btn").button();
+    $("#journalContentHidden").removeClass("hidden");
